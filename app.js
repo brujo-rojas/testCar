@@ -15,6 +15,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
 
     $http.get('derco.json').then(function(response) {
       vm.cars = response.data.results;
+      vm.recalc();
     });
 
     var vm = this;
@@ -38,7 +39,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
     }
 
     vm.sliderPrecioTotal = {
-      value: 4,
+      value: 6,
       options: {
         floor: 4,
         ceil: 25,
@@ -64,7 +65,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
       value: 1000,
       options: {
         floor: 500,
-        ceil: 4000,
+        ceil: 6000,
         step: 500,
         showTicks: true,
         translate: function(value) {
@@ -110,7 +111,6 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
       vm.cuotaInteligente = vm.sliderPrecioTotal.value * 1000000 * 0.3 / vm.sliderCantidadCuotas.value;
 
     }
-    vm.recalc();
 
 
 
