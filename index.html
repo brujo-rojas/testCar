@@ -6,13 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foundation Starter Template</title>
     <link rel="stylesheet" href="./bower_components/angularjs-slider/dist/rzslider.css">
-    <style>
+      <style>
       .container{
         padding: 32px;
         margin: 50px 100px;
         min-height: 100px;
       }
-    </style>
+
+
+
+      .container{
+        font-family: "roboto", sans-serif;
+      }
+
+      .mini-chart{
+        width: 100%;
+        position: relative;
+        height: 30px;
+        background: #039be5;
+        margin: 50px 0px 20px 0px;
+
+      }
+      .data-chart{
+        height: inherit;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        max-width: 100%;
+        background: #283593;
+      }
+
+
+
+      .num-data-chart{
+        float: right;
+        color: white;
+        margin: 7px
+      }
+
+      .data-chart .num-data-chart{
+        float: left;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        display: block;
+        width: 100px;
+      }
+
+
+
+
+
+
+
+
+
+
+
+          </style>
   </head>
   <body>
     <div class="container" ng-controller="WilkyController as wc" >
