@@ -1,0 +1,25 @@
+{
+  "name": "wilky",
+  "authors": [
+    "brujo-rojas <patricio@qfactor.cl>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation-sites": "^6.4.3",
+    "angular": "^1.6.10",
+    "angularjs-slider": "^6.5.1",
+    "angular-fusioncharts": "^0.0.2",
+    "fusioncharts": "^3.12.2",
+    "lodash": "^4.17.5"
+  }
+}

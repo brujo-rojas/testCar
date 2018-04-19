@@ -1,0 +1,57 @@
+<!doctype html>
+<html class="" lang="en" ng-app="wilkyApp">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation Starter Template</title>
+    <link rel="stylesheet" href="./bower_components/angularjs-slider/dist/rzslider.css">
+    <style>
+      .container{
+        padding: 32px;
+        margin: 50px 100px;
+        min-height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" ng-controller="WilkyController as wc" >
+  
+
+      <h3>¿Cuanto vale el auto que quiero?</h3>
+      <rzslider rz-slider-model="wc.sliderPrecioTotal.value"
+          rz-slider-options="wc.sliderPrecioTotal.options"></rzslider>
+
+      <h3>¿Cuanto puedo pagar al mes?</h3>
+      <rzslider rz-slider-model="wc.sliderCuotas.value"
+          rz-slider-options="wc.sliderCuotas.options"></rzslider>
+
+      <h3>¿Cuantas cuotas seran?</h3>
+      <rzslider rz-slider-model="wc.sliderCantidadCuotas.value"
+          rz-slider-options="wc.sliderCantidadCuotas.options"></rzslider>
+
+
+
+      <div class="mini-chart">
+        <div class="data-chart" ng-style="{width: wc.pie_porcentaje+'%'}">
+          <span class="num-data-chart">Pie {{wc.pie_num}}</span>
+        </div>
+        <span class="num-data-chart">Credito {{wc.credito_num}}</span>
+      </div>
+
+      
+
+
+    </div>
+
+    <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="./bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="./bower_components/fusioncharts/fusioncharts.js"></script>
+    <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+    <script src="./bower_components/angular-fusioncharts/dist/angular-fusioncharts.min.js"></script>
+
+    <script src="app.js"></script>
+
+  </body>
+</html>
