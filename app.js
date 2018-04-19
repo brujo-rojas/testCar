@@ -11,34 +11,57 @@ Number.prototype.formatMoney = function(c, d, t){
 
 
 angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
-  .controller('WilkyController', function() {
+  .controller('WilkyController', function($scope, $http) {
 
+    $http.get('derco.json').then(function(response) {
+      vm.cars = response.data.results;
+    });
 
     var vm = this;
 
-    vm.pie_porcentaje = 40;
-    vm.pie_num = "$ 4M";
-    vm.credito_num = "$ 6M";
+    vm.pie_porcentaje = 0;
+    vm.pie_num = "";
+    vm.credito_num = "";
+    vm.delta = 1000000;
+    vm.carsFiltered = [];
+
+    vm.filterCars = function(){
+      vm.carsFiltered = vm.cars;
+      vm.carsFiltered = [];
+      _.each(vm.cars, function(car){
+        if(car.value > vm.sliderPrecioTotal.value*1000000 - vm.delta){
+          if(car.value < vm.sliderPrecioTotal.value*1000000 + vm.delta){
+            vm.carsFiltered.push(car);
+          }
+        }
+      });
+    }
 
     vm.sliderPrecioTotal = {
-      value: 0,
+      value: 4,
       options: {
-        floor: 1,
-        ceil: 30,
-        step: 0.5,
+        floor: 4,
+        ceil: 25,
+        step: 1,
         precision: 1,
         showTicks: true,
         translate: function(value) {
           return '$ ' + value + " M";
         },
         onChange: function(id) {
+          vm.sliderPie.options.floor = vm.sliderPrecioTotal.value * 0.2 * 1000 ;
+          vm.sliderPie.options.ceil = vm.sliderPrecioTotal.value * 1000 ;
+          vm.sliderPie.value = vm.sliderPie.value < vm.sliderPie.options.floor ? vm.sliderPie.options.floor : vm.sliderPie.value;
           vm.recalc();
+          $timeout(function () {
+            $scope.$broadcast('rzSliderForceRender');
+          });V
         },
       }
     };
 
     vm.sliderPie = {
-      value: 0,
+      value: 1000,
       options: {
         floor: 500,
         ceil: 4000,
@@ -49,7 +72,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
             return '$ ' + value + " K";
           }
           if(value >= 1000){
-            return '$ ' + value / 1000 + " M";
+            return '$ ' + _.round(value / 1000, 1) + " M";
           }
         },
         onChange: function(id) {
@@ -59,7 +82,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
     };
 
     vm.sliderCantidadCuotas = {
-      value: 12,
+      value: 36,
       options: {
         floor: 12,
         ceil: 48,
@@ -75,6 +98,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
     };
 
     vm.recalc = function(){
+      vm.filterCars();
       var creditoNecesario = vm.sliderPrecioTotal.value*1000000 - vm.sliderPie.value*1000;
       var valorCuota = creditoNecesario / vm.sliderCantidadCuotas.value;
 
@@ -82,6 +106,8 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
       vm.credito_num = "$ "+ _.round(creditoNecesario/1000000, 2)+" M";
       vm.pie_num = "$ "+ _.round(vm.sliderPie.value / 1000, 2) +" M";
       vm.pie_porcentaje = _.round((vm.sliderPie.value * 1000 * 100)/ (vm.sliderPrecioTotal.value * 1000000), 1);
+
+      vm.cuotaInteligente = vm.sliderPrecioTotal.value * 1000000 * 0.3 / vm.sliderCantidadCuotas.value;
 
     }
     vm.recalc();

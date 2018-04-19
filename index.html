@@ -50,7 +50,7 @@
           </style>
   </head>
   <body>
-    <div class="container" ng-controller="WilkyController as wc" >
+    <div class="container-fluid" ng-controller="WilkyController as wc" >
   
 
 
@@ -70,6 +70,19 @@
         </div><!--/.container-fluid -->
       </nav>
 
+
+
+      <div class="row">
+      
+        <div class="col-sm-5">
+        
+
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="wc.inteligente"> Compra inteligente
+        </label>
+      </div>
+
       <h3>¿Cuanto vale el auto que quiero?</h3>
       <rzslider rz-slider-model="wc.sliderPrecioTotal.value"
           rz-slider-options="wc.sliderPrecioTotal.options"></rzslider>
@@ -82,10 +95,6 @@
       <rzslider rz-slider-model="wc.sliderCantidadCuotas.value"
           rz-slider-options="wc.sliderCantidadCuotas.options"></rzslider>
 
-
-      <h1 class="center">{{wc.cuota | currency}}</h1>
-
-
       <div class="mini-chart">
         <div class="data-chart" ng-style="{width: wc.pie_porcentaje+'%'}">
           <span class="num-data-chart">Pie {{wc.pie_num}}</span>
@@ -93,6 +102,34 @@
         <span class="num-data-chart">Credito {{wc.credito_num}}</span>
       </div>
 
+
+
+      <h1 class="center cuota" ng-class="{inteligente: wc.inteligente}">{{wc.cuota | currency}} cuota</h1>
+      <h1 class="center cuota-inteligente" ng-class="{inteligente: wc.inteligente}">{{wc.cuotaInteligente | currency}} cuota</h1>
+
+
+        </div>
+
+        <div class="col-sm-7">
+
+          <div class="car" ng-repeat="car in wc.carsFiltered | limitTo:9">
+            
+            <img ng-src="{{car.image.guid}}" class="img-car" alt="">
+            <span class="name-car">{{car.model_name}}  {{car.version_name}}</span>
+            <span class="brand-car">{{car.brand_name}}</span>
+            <span class="price-car">{{car.value | currency}}</span>
+
+            <button type="button" class="btn btn-primary" >
+              ver más...
+            </button>
+          
+          </div>
+        
+        
+        
+        </div>
+
+      </div>
       
 
 
