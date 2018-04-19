@@ -21,7 +21,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
     vm.credito_num = "$ 6M";
 
     vm.sliderPrecioTotal = {
-      value: 0,
+      value: 10,
       options: {
         floor: 1,
         ceil: 30,
@@ -29,7 +29,7 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
         precision: 1,
         showTicks: true,
         translate: function(value) {
-          return '$ ' + value + " M";
+          return '$ ' + value + "M";
         },
         onChange: function(id) {
           vm.recalc();
@@ -37,20 +37,15 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
       }
     };
 
-    vm.sliderPie = {
-      value: 0,
+    vm.sliderCuotas = {
+      value: 150,
       options: {
-        floor: 500,
-        ceil: 4000,
-        step: 500,
+        floor: 50,
+        ceil: 400,
+        step: 50,
         showTicks: true,
         translate: function(value) {
-          if(value < 1000){
-            return '$ ' + value + " K";
-          }
-          if(value >= 1000){
-            return '$ ' + value / 1000 + " M";
-          }
+          return '$ ' + value + "K";
         },
         onChange: function(id) {
           vm.recalc();
@@ -59,30 +54,40 @@ angular.module('wilkyApp', ['rzModule', 'fusioncharts', 'ui.bootstrap'])
     };
 
     vm.sliderCantidadCuotas = {
-      value: 12,
+      value: 25,
       options: {
-        floor: 12,
-        ceil: 48,
-        step: 12,
+        floor: 24,
+        ceil: 72,
+        step: 1,
         showTicks: true,
+        readOnly: true,
         translate: function(value) {
           return value + " Cuotas";
-        },
-        onChange: function(id) {
-          vm.recalc();
-        },
+        }
       }
     };
 
     vm.recalc = function(){
-      var creditoNecesario = vm.sliderPrecioTotal.value*1000000 - vm.sliderPie.value*1000;
-      var valorCuota = creditoNecesario / vm.sliderCantidadCuotas.value;
+      var sueldoEstimado = vm.sliderCuotas.value /3 * 10 * 1000;
+      var creditoPermitido = sueldoEstimado * 8;
+      var pieEstimado =  vm.sliderPrecioTotal.value * 1000000 - creditoPermitido;
+      //var creditoEstimado = vm.sliderPrecioTotal.value * 1000000 - pieEstimado;
 
-      vm.cuota = valorCuota;
-      vm.credito_num = "$ "+ _.round(creditoNecesario/1000000, 2)+" M";
-      vm.pie_num = "$ "+ _.round(vm.sliderPie.value / 1000, 2) +" M";
-      vm.pie_porcentaje = _.round((vm.sliderPie.value * 1000 * 100)/ (vm.sliderPrecioTotal.value * 1000000), 1);
+      if(creditoPermitido > (vm.sliderPrecioTotal.value * 1000000)){
+        creditoPermitido = vm.sliderPrecioTotal.value * 1000000;
+      }
 
+
+      if(pieEstimado < 0){
+        pieEstimado = 0
+      }
+
+      vm.pie_num = "$ "+ _.round(pieEstimado / 1000) + " K"
+      vm.credito_num = "$ "+ _.round(creditoPermitido / 1000 )+ " K"
+      vm.pie_porcentaje = _.round(pieEstimado * 100) / (vm.sliderPrecioTotal.value * 1000000);
+
+      vm.cuotas = _.round(creditoPermitido / (vm.sliderCuotas.value * 1000))
+      vm.sliderCantidadCuotas.value = vm.cuotas;
     }
     vm.recalc();
 
